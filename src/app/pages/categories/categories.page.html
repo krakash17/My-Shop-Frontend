@@ -1,0 +1,101 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark" style="height:60px">
+    <div>
+      <div class="row" style="display:-webkit-inline-flex">
+        <div *ngIf="!itemList">
+          <ion-button style="padding-top: 11px;" fill="clear"(click)="backToHome()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <div *ngIf="itemList">
+          <ion-button style="padding-top: 11px;" fill="clear"(click)="backToCategories()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <div>
+          
+           
+          <div style="position: relative;
+          bottom: 21%;">
+      
+            <h3 style="padding-top:12px;" *ngIf="!itemList"> All Categories</h3>
+            <h3 style="padding-top:12px;" *ngIf="itemList">{{selectedCategory}}</h3>
+           
+          </div>
+  
+        
+        </div>
+        <div (click)="openCart()" class="cart-length">{{ cartItemCount | async }}</div>
+          <ion-icon  name="cart" class="cart-icon" (click)="openCart()" ></ion-icon>
+      </div>
+    </div>
+  
+  
+    
+    
+  </ion-toolbar>
+  
+
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-list *ngIf="!itemList">
+   
+
+    <ion-item *ngFor="let category of categories" (click)="openSubCategories(category.id)">
+      <ion-avatar style="height: 100px;
+      width: 115px;" slot="start">
+        <img [src]="category.picture">
+      </ion-avatar>
+      <ion-label>
+        <h6>upto 60% off</h6>
+        <h1>{{category.category_name}}</h1>
+
+        <!-- <p>Pulses,Rice,Flours,Grains,etc...</p> -->
+      </ion-label>
+     
+    </ion-item>
+  </ion-list>
+  <ion-list  *ngIf="itemList">
+
+  
+  <ion-card  *ngFor="let subcategory of selectedSubCategories" (click)="goToProducts(subcategory.id)">
+    
+      <div class="row"  >
+         
+            <div>
+              <img [src]="subcategory.picture" style="    height: 153px;
+              width: 340px;">
+            </div>
+            <div>
+              <h3> {{subcategory.subcategory_name}}</h3>
+             
+            </div>
+       
+          
+          
+     
+      </div>
+    
+  </ion-card>
+</ion-list>
+  
+  <!-- <ion-list *ngIf="itemList">
+   
+<div>
+  <ion-item *ngFor="let category of categories"  >
+    
+    <img [src]="category.image">
+  
+  
+    <h6>upto 60% off</h6>
+    <h1>{{category.name}}</h1>
+
+    
+  
+ 
+</ion-item>
+</div>
+   
+  </ion-list> -->
+</ion-content>

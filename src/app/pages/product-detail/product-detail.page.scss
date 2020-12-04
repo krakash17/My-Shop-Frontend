@@ -1,0 +1,43 @@
+.to-top{
+    height:300px;
+}
+// .detail-card{
+//     // text-align: center;
+// }
+ion-fab-button {
+    height: 45px;
+    width: 45px;
+  }
+   
+  .cart-icon {
+    font-size: 34px;
+  }
+   
+  .cart-length {
+    color: var(--ion-color-primary);
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    font-weight: 600;
+    font-size: .9em;
+    min-width: 25px;
+    z-index: 10;
+  }
+
+  .prod-list{
+    display: -webkit-inline-box;
+    overflow-x: scroll;
+    width:100%;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .prod-card{
+    width: 38%;
+    height: 197px;
+    bottom: 2%;
+    position: relative;
+
+      // display: inline-block;
+  }

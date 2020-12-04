@@ -1,0 +1,72 @@
+.row{
+    display:inline-flex;
+}
+.profile-row{
+    display: inline-flex;
+    width:100%;
+}
+/* Without setting height the slides will take up the height of the slide's content */
+ion-slides {
+    height: 37%;
+  }
+  .profile-img{
+    height: 104px;
+    width: 114px;
+    border-radius: 75px;
+    padding-left: 3px;
+
+  }
+  ion-fab-button {
+    height: 70px;
+    width: 70px;
+  }
+   
+  .cart-icon {
+    font-size: 30px;
+    right: 16%;
+    top: 16%;
+    position: absolute;
+  }
+   
+  .cart-length {
+    color:red;
+    position: absolute;
+    top: 12px;
+    /* left: 12px; */
+    right: 12%;
+    font-weight: 600;
+    font-size: 1em;
+    min-width: 24px;;
+    z-index: 10;
+  }
+  .prod-card{
+    width: 43%;
+      height: 241px;
+      bottom: 3%;
+      position: relative;
+      // display: inline-block;
+  }
+  .card-content{
+    position: absolute;
+    right:0%;
+  }
+  .fixed[scrollx=true], div[scrolly=true] {
+    position: relative;
+    overflow: hidden;
+  
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  .fixed[scrollx=true] {
+    overflow-x: auto;
+  }
+  .prod-list{
+    display: -webkit-inline-box;
+    overflow-x: scroll;
+    width:100%;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }

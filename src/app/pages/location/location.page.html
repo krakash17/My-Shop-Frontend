@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark" style="height:60px">
+    <div>
+      <div class="row" style="display:-webkit-inline-flex">
+        <div >
+          <ion-button style="padding-top: 11px;" fill="clear"(click)="backToHome()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <div>
+          
+           
+          <div style="position: relative;
+          bottom: 21%;">
+      
+            <h3 style="padding-top:12px;" > Location</h3>
+           
+          </div>
+  
+        
+        </div>
+        <div (click)="openCart()" class="cart-length">{{ cartItemCount | async }}</div>
+          <ion-icon  name="cart" class="cart-icon" (click)="openCart()" ></ion-icon>
+      </div>
+    </div>
+  
+  
+    
+    
+  </ion-toolbar>
+  
+
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+
+    <ion-button (click)="getCurrentCoordinates()" expand="block">
+      Get Location
+    </ion-button>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Location Coordinates</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>
+        Latitue
+      </ion-label>
+      <ion-badge color="danger" slot="end">{{latitude}}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Longitude
+      </ion-label>
+      <ion-badge color="danger" slot="end">{{longitude}}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Address
+      </ion-label>
+      <ion-badge color="danger" slot="end">{{Address}}</ion-badge>
+    </ion-item>
+    </ion-list>    
+  </div>
+</ion-content>

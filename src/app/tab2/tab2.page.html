@@ -1,17 +1,82 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+  <ion-toolbar color="dark" style="height:60px">
+    <div>
+      <div class="row" style="display:-webkit-inline-flex">
+        <!-- <div >
+          <ion-button style="padding-top: 11px;" fill="clear"(click)="backToHome()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button>
+        </div> -->
+        <div>
+          <div style="position: relative;
+          bottom: 21%;">
+            <h3 style="padding-top:12px;     padding-left: 22px;" > All Products</h3>
+          </div>
+        </div>
+
+        <div [routerLink]="['/search']" style="    position: absolute;right: 15%; top: 22%;">
+          <ion-icon style="font-size: 27px;" name="search"  ></ion-icon>
+        </div>
+
+
+
+        <div (click)="openCart()" class="cart-length">{{ cartItemCount | async }}</div>
+          <ion-icon  name="cart" class="cart-icon" (click)="openCart()" ></ion-icon>
+      </div>
+    </div> 
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-list  >
+    <ion-card  *ngFor="let product of productData" >
+      <ion-row>
+        <ion-col size="4" >
+          <div (click)="openDetail(product.id)">
+            <img [src]="product.image" style="height: 152px;
+            padding-top: 16px;
+            width: 85%;">
+          </div>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+        </ion-col>
+        <ion-col size="8">
+          <div class="div">
+            <div >
+              <h4>₹ {{product.price}}</h4>
+            </div>
+            <div>
+              <h3 (click)="openDetail(product.id,product.subCategoryId)"> {{product.name}}</h3>
+            </div>
+           
+            <div style="display:inline-flex">
+              <h5> {{product.quantity}}</h5>
+                <div style="    position: absolute;
+                right: 11%;
+                width: 44%;" *ngIf="[product.amount]==0">
+                  <ion-button style="height: 39px;" color="danger" expand="full" (click)="addToCart(product)">
+                    Add
+                  </ion-button>
+                </div>
+                <div style="display:inline-flex;position: absolute;
+                right: 4%;" *ngIf="[product.amount]>0">
+                      <div>
+                      <ion-button color="danger" fill="clear" (click)="decreaseCartItem(product)">
+                        <ion-icon name="remove-circle" slot="icon-only"></ion-icon>
+                      </ion-button>
+                    </div>
+                      <div style="padding-top: 5px;">
+                        <p> {{ product.amount }}</p>
+                      </div>
+                    <div>
+                      <ion-button color="danger" fill="clear" (click)="increaseCartItem(product)">
+                        <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+                      </ion-button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-list>
 </ion-content>

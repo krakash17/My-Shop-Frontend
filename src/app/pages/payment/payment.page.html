@@ -1,0 +1,251 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark" style="height:60px">
+    <div>
+      <div class="row" style="display:-webkit-inline-flex">
+        <div  *ngIf="!openSummary">
+          <ion-button style="padding-top: 11px;" fill="clear"(click)="backToCart()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <div *ngIf="openSummary" >
+          <!-- <ion-button style="padding-top: 11px;" fill="clear"(click)="backToCart()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button> -->
+        </div>
+        <div> 
+          <div style="position: relative;
+          bottom: 21%;">
+            <h3 *ngIf="!payment && changedAddress"style="padding-top:11px;" >Shipping Address </h3>
+            <h3 *ngIf="payment" style="padding-top:11px;" >Payment Options </h3>
+            <h3 *ngIf="openSummary" style="padding-top:11px;" >Order Summary </h3>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!payment && changedAddress">
+  <ion-card *ngIf="!showAddress && changedAddress">
+    <form [formGroup]="signInForm" (ngSubmit)="getAddressData()">
+      <ion-list class="inputs-list" lines="full">
+        <ion-item class="input-item">
+          <ion-input type="text" placeholder="Full Name" formControlName="name" clearInput autocapitalize="on" inputmode="text"></ion-input>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validation_messages.name">
+            <div class="error-message" *ngIf="signInForm.get('name').hasError(validation.type) && (signInForm.get('name').dirty || signInForm.get('name').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+        <ion-item class="input-item">
+          <ion-input type="text" placeholder="Shipping Address" formControlName="address" clearInput autocapitalize="off" inputmode="text"></ion-input>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validation_messages.address">
+            <div class="error-message" *ngIf="signInForm.get('address').hasError(validation.type) && (signInForm.get('address').dirty || signInForm.get('address').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+  
+        <ion-item class="input-item">
+          <ion-input type="numeric" placeholder="Contact Number" formControlName="number"></ion-input>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validation_messages.number">
+            <div class="error-message" *ngIf="signInForm.get('number').hasError(validation.type) && (signInForm.get('number').dirty || signInForm.get('number').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ion-list>
+      <!--  -->
+      <ion-button class="sign-in-btn" type="submit" expand="block" [disabled]="!signInForm.valid" >Submit</ion-button>
+      <div class="error-container" *ngIf="submitError">
+        <div class="error-message">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          <span>{{ submitError }}</span>
+        </div>
+      </div>
+      <!-- <ion-row class="sign-up-btn-wrapper">
+        <ion-button class="sign-up-btn" fill="clear" [routerLink]="['/sign-up']">
+          Don't have an account?
+        </ion-button>
+      </ion-row> -->
+    </form>
+  </ion-card>
+
+  <ion-card *ngIf="showAddress">
+    <ion-row>
+      <ion-col size="8">
+        <ion-title>
+          Shipping Address
+        </ion-title>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button size="block" (click)="changeAddress()" color="danger">Change</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <h3>
+          {{addressData.name}}
+        </h3>
+        <h5>
+          {{addressData.address}}
+        </h5>
+        <h5>
+          {{addressData.number}}
+        </h5>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer *ngIf="showAddress" class="footer">
+
+  <div class="row">
+    <ion-title (click)="gotoPayment()" style="    padding-top: 11px;">
+      Proceed
+    </ion-title>
+  </div>
+
+</ion-footer>
+
+
+
+<ion-content *ngIf="payment">
+
+  <ion-card>
+    <ion-row>
+      <div class="div-row">
+        <ion-col size="8">
+          <h4>Amount Payable</h4>
+        </ion-col>
+        <ion-col size="4">
+          <h4>₹ {{getTotal()}}</h4>
+        </ion-col>
+      </div>
+    </ion-row>
+  </ion-card>
+  
+
+  <ion-card>
+    <ion-list>
+      <ion-radio-group value="paymentType" (ionChange)="paymentOptionChange($event)">
+        <ion-list-header>
+          <ion-label>Payment Options</ion-label>
+        </ion-list-header>
+    
+        <ion-item>
+          <ion-label>Cash On Delivery</ion-label>
+          <ion-radio slot="start" value="cash"></ion-radio>
+        </ion-item>
+    
+        <!-- <ion-item>
+          <ion-label>Paytm</ion-label>
+          <ion-radio slot="start" value="paytm"></ion-radio>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>Bhim UPI</ion-label>
+          <ion-radio slot="start" value="UPI"></ion-radio>
+        </ion-item> -->
+      </ion-radio-group>
+    </ion-list>
+  </ion-card>
+</ion-content>
+
+<ion-footer *ngIf="payment" class="footer">
+
+  <div class="row">
+    <ion-title (click)="gotoSummary()" style="    padding-top: 11px;">
+      Place Order
+    </ion-title>
+  </div>
+
+</ion-footer>
+
+
+<ion-content *ngIf="openSummary">
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <h4>
+          Shipping Address
+        </h4>
+      </ion-col>
+     
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <h3>
+          {{addressData.name}}
+        </h3>
+        <p>
+          {{addressData.address}}
+        </p>
+        <p>
+          {{addressData.number}}
+        </p>
+      </ion-col>
+    </ion-row>
+  
+
+
+  </ion-card>
+  <!-- <ion-card>
+    <ion-row>
+      <div class="div-row">
+        <ion-col size="8">
+          <h4>Amount Paid</h4>
+        </ion-col>
+        <ion-col size="4">
+          <h4>₹ {{getTotal()}}</h4>
+        </ion-col>
+      </div>
+    </ion-row>
+  </ion-card> -->
+  <ion-card>
+<ion-row>
+  <div>
+    <h4>
+      Product Purchased
+    </h4>
+  </div>
+  
+</ion-row>
+<ion-row>
+  <ion-list>
+    <ion-item *ngFor="let c of cart">
+      <div class="div-row">
+        <ion-col size="8">
+          <h6>{{c.name}}</h6>
+        </ion-col>
+        <ion-col size="4">
+          <h6>₹ {{c.price}}</h6>
+        </ion-col>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-row>
+  </ion-card>
+
+  <ion-row>
+    <ion-button  [routerLink]="['/tabs/tab2']" color="danger" size="full" center>
+      <ion-text>Continue Shopping</ion-text>
+        </ion-button>
+  </ion-row>
+  <ion-row>
+    <ion-button  [routerLink]="['/tabs/tab1']" color="primary" size="full" center>
+      <ion-text>Back To Home</ion-text>
+        </ion-button>
+  </ion-row>
+</ion-content>

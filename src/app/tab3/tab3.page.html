@@ -1,17 +1,212 @@
+
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+  <ion-toolbar color="dark" style="height:60px">
+    <div>
+      <div class="row" style="display:-webkit-inline-flex">
+        <div >
+          <ion-button style="padding-top: 11px;" fill="clear"(click)="backToHome()" >
+            <ion-icon color="light" name="arrow-back-outline"  slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <div>
+          <div style="position: relative;
+          bottom: 21%;">
+            <h3 style="padding-top:12px;     padding-left: 22px;" > Account</h3>
+          </div>
+        </div>
+
+        <div [routerLink]="['/search']" style="    position: absolute;right: 15%; top: 22%;">
+          <ion-icon style="font-size: 27px;" name="search"  ></ion-icon>
+        </div>
+
+
+
+        <div (click)="openCart()" class="cart-length">{{ cartItemCount | async }}</div>
+          <ion-icon  name="cart" class="cart-icon" (click)="openCart()" ></ion-icon>
+      </div>
+    </div> 
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content fullscreen>
+  <ion-row color="secondery">
+    <ion-row>
+       <ion-col size="4">
+         <div>
+           <img style="width: 160px;height: 86px;" src=".././../assets/icon/user.png" alt="user">
+         </div>
+         <ion-button color="primary"  (click)="uploadProfilePicture()">upload</ion-button>
+         <input type="file"  (change)="onImageChanged($event)" />
+       </ion-col>
+       <ion-col size="4">
+         <ion-row>
+           <div>
+             <h5>{{firstname}}&nbsp;{{lastname}}</h5>
+             <h6>{{phone}}</h6>
+           </div>
+         </ion-row>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+         <ion-row>
+          <div>
+            
+          </div>
+        </ion-row>
+       </ion-col>
+      
+    </ion-row>
+    <ion-row>
+      <ion-segment #c (ionChange)="segmentChanged(c.value)" value="profile">
+        <ion-segment-button value="profile">
+          <ion-label>Profile</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="card">
+          <ion-label>My Card</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="address">
+          <ion-label>My Address</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+    
+
+  </ion-row>
+
+  <ion-row>
+    <ion-card class="card" *ngIf="profile && !editProfile ">
+      <ion-list >
+        <ion-item >
+          <ion-icon name="cart-outline" slot="start"></ion-icon>
+          <ion-label>Name:</ion-label>
+          <ion-label >{{firstname}}&nbsp;{{lastname}}</ion-label>
+         
+        </ion-item>
+        
+        <ion-item >
+          <ion-icon name="list-circle-outline" slot="start"></ion-icon>
+          <ion-label>Email:</ion-label>
+          <ion-label >{{email}}</ion-label>
+          
+
+        </ion-item>
+        <ion-item>
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          <ion-label>Phone Number:</ion-label>
+          <ion-label >{{phone}}</ion-label>
+          
+        </ion-item>
+        <!-- <ion-item>
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label>About Us</ion-label>
+        </ion-item>
+      >
+        <ion-item>
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label >Logout</ion-label>
+        </ion-item> -->
+      </ion-list>
+      <ion-button color="danger"  (click)="editUserProfile()">Edit Profile</ion-button>
+     
+    </ion-card>
+
+    <ion-card class="card" *ngIf="profile && editProfile ">
+      <form [formGroup]="editUserForm" (ngSubmit)="updateUserProfile()">
+        <ion-list class="inputs-list" lines="full">
+          <ion-item class="input-item">
+            <ion-label>First Name : </ion-label>
+            <ion-input type="text" formControlName="firstname" clearInput autocapitalize="off" inputmode="text"></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validation_messages.firstname">
+              <div class="error-message" *ngIf="editUserForm.get('firstname').hasError(validation.type) && (editUserForm.get('firstname').dirty || editUserForm.get('firstname').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+    
+          <ion-item class="input-item">
+            <ion-label>Last Name : </ion-label>
+            <ion-input type="text" formControlName="lastname" clearInput autocapitalize="off" inputmode="text"></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validation_messages.lastname">
+              <div class="error-message" *ngIf="editUserForm.get('lastname').hasError(validation.type) && (editUserForm.get('lastname').dirty || signUpForm.get('firstname').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+    
+          <ion-item class="input-item">
+            <ion-label>Email : </ion-label>
+            <ion-input type="email"  formControlName="email" clearInput autocapitalize="off" inputmode="email"></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validation_messages.email">
+              <div class="error-message" *ngIf="editUserForm.get('email').hasError(validation.type) && (editUserForm.get('email').dirty || editUserForm.get('email').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+    
+          
+          <ion-item class="input-item">
+            <ion-label>Mobile Number : </ion-label>
+            <ion-input type="numeric"  formControlName="phonenumber" clearInput autocapitalize="off" inputmode="numeric"></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validation_messages.phonenumber">
+              <div class="error-message" *ngIf="editUserForm.get('phonenumber').hasError(validation.type) && (editUserForm.get('phonenumber').dirty || editUserForm.get('phonenumber').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+    
+          <ion-item class="input-item">
+            <ion-label>Password</ion-label>
+            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validation_messages.password">
+              <div class="error-message" *ngIf="editUserForm.get('password').hasError(validation.type) && (editUserForm.get('password').dirty || editUserForm.get('password').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </ion-list>
+    
+        <ion-button class="sign-up-btn" type="submit" expand="block" [disabled]="!editUserForm.valid">Submit</ion-button>
+        <div class="error-container" *ngIf="submitError">
+          <div class="error-message">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ submitError }}</span>
+          </div>
+        </div>
+       
+      </form>
+    </ion-card>
+
+    <ion-card class="card" *ngIf="card">
+      <ion-list>
+        <ion-item>
+          <h4>My Card</h4>
+        </ion-item>
+     
+      </ion-list>
+    </ion-card>
+
+    <ion-card class="card" *ngIf="address">
+      <ion-list>
+        <ion-item>
+          <h4>My Address</h4>
+        </ion-item>
+     
+      </ion-list>
+    </ion-card>
+    
+  </ion-row>
+ 
 </ion-content>
